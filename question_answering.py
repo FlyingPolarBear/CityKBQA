@@ -3,7 +3,7 @@ Author: Derry
 Email: drlv@stu.xidian.edu.cn
 Date: 2021-02-13 11:28:37
 LastEditors: Derry
-LastEditTime: 2021-03-28 17:30:51
+LastEditTime: 2021-04-06 22:20:52
 Description: file content
 '''
 
@@ -30,24 +30,26 @@ class QASystem(object):
         self.city_name_path = 'data/final/城市列表及别称.txt'
         self.prov_name_path = 'data/final/省份列表及别称.txt'
         self.w2v_path = 'F:/word2vec/renmin.w2v'
+        self.sai_prop, self.sai_tail = load_sai_info(
+            'data/added_knowledge/sai_data.txt')
         self.graph = Graph(host="localhost", http_port=7474,
                            user="neo4j", password="456123")
         self.prop_acauto, self.prop_list = self.build_acauto(
-            self.city_prop_path, self.prov_prop_path)
+            self.city_prop_path, self.prov_prop_path, [[prop] for prop in self.sai_prop])
         self.name_acauto, self.name_list = self.build_acauto(
-            self.city_name_path, self.prov_name_path)
+            self.city_name_path, self.prov_name_path, [['人工智能学院', 'AI院', '智能院']])
         self.word2vec = self.load_word2vec()
         self.stopwords = set(
             load_list("data/stopwords_list/hit_stopwords.txt"))
         print("系统启动完毕！")
 
-    def build_acauto(self, city_path, prov_path):
+    def build_acauto(self, city_path, prov_path, other_list):
         city_list = [city.split()
                      for city in LoadText(city_path).split('\n')]
         prov_list = [prov.split()
                      for prov in LoadText(prov_path).split('\n')]
         actree = ahocorasick.Automaton()
-        entity_list = city_list+prov_list
+        entity_list = city_list+prov_list+other_list
         for index, props in enumerate(entity_list):
             for prop in props:
                 actree.add_word(prop, (index, props[0]))
@@ -130,7 +132,6 @@ class QASystem(object):
         query = ''
         self.answers = None
         if len(self.question_factor['entity']):
-            
             if len(self.question_factor['prop']):
                 if self.question_factor['prop'] == '简介':
                     query = f"match (e) " \
@@ -171,9 +172,9 @@ class QASystem(object):
         return self.answers
 
     def main(self):
-        test_question_stream = ('北京市的邮政编码区号是多少', '安徽省有哪些城市', '台湾属于哪个国家',
+        test_question_stream = ['北京市的邮政编码区号是多少', '安徽省有哪些城市', '台湾属于哪个国家',
                                 '福建的方言有哪些？', '新疆与哪些省毗邻', '海南的GDP有多少',
-                                '介绍一下上海吧', '海南有哪些城市？','六安与哪接壤')
+                                '介绍一下上海吧', '海南有哪些城市？', '六安与哪接壤', '人工智能学院的专业有哪些', '人工智能学院的国家级平台', '智能院的研究生有哪些二级学科']
         # while True:
         #     question = input('问题：')
         for question in test_question_stream:
