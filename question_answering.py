@@ -3,7 +3,7 @@ Author: Derry
 Email: drlv@stu.xidian.edu.cn
 Date: 2021-02-13 11:28:37
 LastEditors: Derry
-LastEditTime: 2021-04-06 22:20:52
+LastEditTime: 2021-04-13 11:00:12
 Description: file content
 '''
 
@@ -29,7 +29,7 @@ class QASystem(object):
         self.prov_prop_path = 'data/final/省份属性及别称.txt'
         self.city_name_path = 'data/final/城市列表及别称.txt'
         self.prov_name_path = 'data/final/省份列表及别称.txt'
-        self.w2v_path = 'F:/word2vec/renmin.w2v'
+        self.w2v_path = 'D:/word2vec/renmin.w2v'
         self.sai_prop, self.sai_tail = load_sai_info(
             'data/added_knowledge/sai_data.txt')
         self.graph = Graph(host="localhost", http_port=7474,
@@ -53,6 +53,7 @@ class QASystem(object):
         for index, props in enumerate(entity_list):
             for prop in props:
                 actree.add_word(prop, (index, props[0]))
+                jieba.add_word(prop)
         actree.make_automaton()
         return actree, entity_list
 
@@ -69,13 +70,13 @@ class QASystem(object):
         return word2vec
 
     def compute_similarity(self, word1, word2, alpha=0.5):  # 计算相似度
+        maxlen = max(len(word1), len(word2))
+        Leven_similarity = (maxlen - Levenshtein.distance(word1, word2))/maxlen
         if word1 in self.word2vec.keys() and word2 in self.word2vec.keys():
             cos_similarity = 1 - \
                 distance.cosine(self.word2vec[word1], self.word2vec[word2])
         else:
-            cos_similarity = 0
-        maxlen = max(len(word1), len(word2))
-        Leven_similarity = (maxlen - Levenshtein.distance(word1, word2))/maxlen
+            cos_similarity = Leven_similarity
         # print(round(cos_similarity, 2), round(Leven_similarity, 2))
         return alpha*cos_similarity+(1-alpha)*Leven_similarity
 
@@ -88,7 +89,7 @@ class QASystem(object):
         similarity, link = max(
             zip(word2similarity.values(), word2similarity.keys()))
         predicate, sim_word = link.split()
-        print('谓词：', predicate, '| 相似词：', sim_word,
+        print('选中词：', predicate, '| 相似词：', sim_word,
               '| 相似度：', similarity, end=' ')
         return sim_word
 
@@ -174,7 +175,9 @@ class QASystem(object):
     def main(self):
         test_question_stream = ['北京市的邮政编码区号是多少', '安徽省有哪些城市', '台湾属于哪个国家',
                                 '福建的方言有哪些？', '新疆与哪些省毗邻', '海南的GDP有多少',
-                                '介绍一下上海吧', '海南有哪些城市？', '六安与哪接壤', '人工智能学院的专业有哪些', '人工智能学院的国家级平台', '智能院的研究生有哪些二级学科']
+                                '介绍一下上海吧', '海南有哪些城市？', '人工智能学院的专业有哪些', 
+                                '人工智能学院的国家级平台', '智能院的研究生有哪些二级学科',
+                                '人工智能学院在河北分数线是多少', '智能院学硕分数线是多少']
         # while True:
         #     question = input('问题：')
         for question in test_question_stream:
