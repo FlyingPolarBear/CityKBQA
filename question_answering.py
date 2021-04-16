@@ -3,8 +3,8 @@ Author: Derry
 Email: drlv@stu.xidian.edu.cn
 Date: 2021-02-13 11:28:37
 LastEditors: Derry
-LastEditTime: 2021-04-13 11:00:12
-Description: file content
+LastEditTime: 2021-04-15 21:22:38
+Description: 问答系统引擎
 '''
 
 import logging
@@ -116,11 +116,12 @@ class QASystem(object):
             return self.find_most_similar(prop_words)
 
     def parse_question(self, question):
-        # self.sentence_words = list(jieba.cut(question))
-        self.sentence_words_flags = [(w.word, w.flag)
-                                     for w in pseg.cut(question)]
-        self.sentence_words = [s[0] for s in self.sentence_words_flags]
-        # self.sentence_flags = [s[1] for s in self.sentence_words_flags]
+        self.sentence_words = list(jieba.cut(question)) # 精确模式
+        # self.sentence_words = list(jieba.cut_for_search(question)) # 搜索引擎模式
+        # self.sentence_words_flags = [(w.word, w.flag)
+        #                              for w in pseg.cut(question)]
+        # self.sentence_words = [s[0] for s in self.sentence_words_flags]
+        # # self.sentence_flags = [s[1] for s in self.sentence_words_flags]
         self.question_factor = {}
         self.question_factor['entity'] = self.named_entity_recognition(
             question)
