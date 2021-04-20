@@ -3,7 +3,7 @@ Author: Derry
 Email: drlv@stu.xidian.edu.cn
 Date: 2021-02-10 12:38:01
 LastEditors: Derry
-LastEditTime: 2021-04-13 10:33:49
+LastEditTime: 2021-04-17 10:13:33
 Description: 从清洗后的json知识中创建图数据
 '''
 
@@ -83,11 +83,11 @@ class GraphBuilder(object):
     def pipeline(self):
         start = time.time()
         # 导入其他知识
-        self.graph.create(Node("学院", name="人工智能学院"))
-        for entity in set(self.sai_tail):
-            self.graph.create(Node("其他", name=entity))
-        for prop, entity in zip(self.sai_prop, self.sai_tail):
-            self.create_sai_relation(prop, entity)
+        # self.graph.create(Node("学院", name="人工智能学院"))
+        # for entity in set(self.sai_tail):
+        #     self.graph.create(Node("其他", name=entity))
+        # for prop, entity in zip(self.sai_prop, self.sai_tail):
+        #     self.create_sai_relation(prop, entity)
 
         # 导入城市知识
         self.graph.create(Node("国家", name="中华人民共和国"))

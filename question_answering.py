@@ -3,7 +3,7 @@ Author: Derry
 Email: drlv@stu.xidian.edu.cn
 Date: 2021-02-13 11:28:37
 LastEditors: Derry
-LastEditTime: 2021-04-15 21:22:38
+LastEditTime: 2021-04-19 20:27:42
 Description: 问答系统引擎
 '''
 
@@ -89,25 +89,25 @@ class QASystem(object):
         similarity, link = max(
             zip(word2similarity.values(), word2similarity.keys()))
         predicate, sim_word = link.split()
-        print('选中词：', predicate, '| 相似词：', sim_word,
-              '| 相似度：', similarity, end=' ')
+        # print('选中词：', predicate, '| 相似词：', sim_word,
+        #       '| 相似度：', similarity, end=' ')
         return sim_word
 
     def named_entity_recognition(self, question):  # 命名实体识别
         entity_parse = self.name_acauto.iter(question)
         named_entity = list(set([entity[1][1] for entity in entity_parse]))
-        print("候选实体：", named_entity, end=' ')
+        # print("候选实体：", named_entity, end=' ')
         if len(named_entity) == 1:
             return named_entity[0]
         elif len(named_entity) < 1:
             named_entity = [name[0]
-                            for name in self.name_list if name not in self.stopwords]
+                            for name in self.name_list if name[0] not in self.stopwords]
         return self.find_most_similar(named_entity)
 
     def relation_extraction(self, question):  # 属性映射
         prop_parse = self.prop_acauto.iter(question)
         prop_words = list(set([prop[1][1] for prop in prop_parse]))
-        print('候选属性:', prop_words, end=' ')
+        # print('候选属性:', prop_words, end=' ')
         if len(prop_words) == 1:
             return prop_words[0]
         elif len(prop_words) < 1:
@@ -174,11 +174,7 @@ class QASystem(object):
         return self.answers
 
     def main(self):
-        test_question_stream = ['北京市的邮政编码区号是多少', '安徽省有哪些城市', '台湾属于哪个国家',
-                                '福建的方言有哪些？', '新疆与哪些省毗邻', '海南的GDP有多少',
-                                '介绍一下上海吧', '海南有哪些城市？', '人工智能学院的专业有哪些', 
-                                '人工智能学院的国家级平台', '智能院的研究生有哪些二级学科',
-                                '人工智能学院在河北分数线是多少', '智能院学硕分数线是多少']
+        test_question_stream = load_list('data/test_question.txt')
         # while True:
         #     question = input('问题：')
         for question in test_question_stream:
@@ -188,9 +184,9 @@ class QASystem(object):
             self.parse_question(question)
             answers = self.query_answer()
             if answers:
-                print('\n回答：{}'.format(answers))
+                print('回答：{}'.format(answers))
             else:
-                print('\n回答：抱歉，没有找到答案')
+                print('回答：抱歉，没有找到答案')
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ Author: Derry
 Email: drlv@stu.xidian.edu.cn
 Date: 2021-02-10 21:18:48
 LastEditors: Derry
-LastEditTime: 2021-03-14 00:55:33
+LastEditTime: 2021-04-16 21:28:28
 Description: 清洗数据，保留出现次数较高的属性
 '''
 
@@ -32,9 +32,6 @@ class DataCleaner(object):
                 if prop not in prop2count.keys():
                     prop2count[prop] = 0
                 prop2count[prop] += 1
-        # for i, j in prop2count.items():
-        #     print(i, j)
-        # print("----------------------")
         for prop, count in prop2count.items():
             if count >= 0.3 * len(city_info):
                 property_dict[prop] = ''
