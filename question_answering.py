@@ -3,7 +3,7 @@ Author: Derry
 Email: drlv@stu.xidian.edu.cn
 Date: 2021-02-13 11:28:37
 LastEditors: Derry
-LastEditTime: 2021-04-19 20:27:42
+LastEditTime: 2021-05-06 16:24:57
 Description: 问答系统引擎
 '''
 
@@ -77,7 +77,6 @@ class QASystem(object):
                 distance.cosine(self.word2vec[word1], self.word2vec[word2])
         else:
             cos_similarity = Leven_similarity
-        # print(round(cos_similarity, 2), round(Leven_similarity, 2))
         return alpha*cos_similarity+(1-alpha)*Leven_similarity
 
     def find_most_similar(self, candidate_words):  # 寻找最相似的词
@@ -121,7 +120,7 @@ class QASystem(object):
         # self.sentence_words_flags = [(w.word, w.flag)
         #                              for w in pseg.cut(question)]
         # self.sentence_words = [s[0] for s in self.sentence_words_flags]
-        # # self.sentence_flags = [s[1] for s in self.sentence_words_flags]
+        # self.sentence_flags = [s[1] for s in self.sentence_words_flags]
         self.question_factor = {}
         self.question_factor['entity'] = self.named_entity_recognition(
             question)
