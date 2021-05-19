@@ -3,7 +3,7 @@ Author: Derry
 Email: drlv@stu.xidian.edu.cn
 Date: 2021-01-20 21:23:22
 LastEditors: Derry
-LastEditTime: 2021-03-14 21:28:35
+LastEditTime: 2021-05-19 11:21:27
 Description: 云语音任务工具箱
 
 语音听写流式 WebAPI 接口调用示例 接口文档（必看）：https://doc.xfyun.cn/rest_api/语音听写（流式版）.html
@@ -356,5 +356,9 @@ def Text2Speech(file="QAcache/answer"):
 
 
 if __name__ == "__main__":
-    Text2Speech("QAcache/answer")
+    Record_common()  # 问题录音
+    Speech2Text()  # 录音转文本
+    question = LoadText('QAcache/question.txt')  # 加载文本文件
+    print('我： ', question)
+    Text2Speech()
     Play(filename='QAcache/answer.wav', CHUNK=1024)
