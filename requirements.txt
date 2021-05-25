@@ -1,5 +1,5 @@
 requests==2.24.0
-beautifulsoup==44.9.3
+beautifulsoup4==44.9.3
 py2neo==4.2.0
 pyahocorasick==1.4.0
 PyAudio==0.2.11
