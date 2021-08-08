@@ -26,7 +26,7 @@
 - **问句解析**：包括命名实体识别和关系映射，首先构建实体的AC自动机，当用户输入时，快速匹配实体。如果匹配到多个实体，则根据语义混合相似度计算找到最相似的实体。如果未匹配到实体，则对问句分词，去除停用词后，将剩余实体与词典中的实体一一进行语义混合相似度的计算，返回最相似的匹配结果。
 - **查询回答**：根据实体和关系，生成相应数据库查询语句，得到相应回答。
 
-![流程图](./source/系统流程.png)
+<img width="824" alt="流程图" src="https://user-images.githubusercontent.com/47551143/128628670-b0a0865d-ac39-4be6-b6b0-64b3eef0249e.png">
 
 #### 脚本目录
 
@@ -37,7 +37,6 @@
 3. source文件夹：存储图形界面的相关组件，无需改动
 
 ##### 知识图谱构建
-
 
 1. request_data.py：从百度百科中请求数据并解析，构建json格式的知识
 2. clean_data.py：清洗数据，保留出现次数较高的属性
@@ -148,14 +147,15 @@
 
 #### 知识图谱示例
 
-![节点规模](./source/节点规模.png)
+<img width="202" alt="节点规模" src="https://user-images.githubusercontent.com/47551143/128628751-65fc9896-bf86-47e6-94d8-01bc424e7233.png">
 
-![graph_example](./source/图谱可视化.svg)
+[图谱可视化.pdf](https://github.com/FlyingPolarBear/CityKBQA/files/6950539/default.pdf)
 
 #### 问答引擎示例
 
-![engine_example](./source/engine_example.png)
+<img width="948" alt="问答流程举例" src="https://user-images.githubusercontent.com/47551143/128628769-35a4b927-6877-4499-8505-d38fb71fdace.png">
+
 
 #### 问答系统GUI截图
 
-![image-GUI_example](./source/GUI_example.png)
+![图形用户界面](https://user-images.githubusercontent.com/47551143/128628779-bca02f91-f82e-44ad-869d-2ac3d1425854.png)
